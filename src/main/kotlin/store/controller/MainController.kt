@@ -10,10 +10,10 @@ class MainController {
     private val inputView = InputView()
     private val outputView = OutputView(Products().products)
     private val customer = Customer()
+    private val product = Products()
     fun run() {
         outputView.printGreeting()
-        val purchase = getValidInput()
-
+        validateAndDeductInventory()
     }
 
     private fun getValidInput(): MutableList<Purchase> {
@@ -23,6 +23,18 @@ class MainController {
         } catch (e: IllegalArgumentException) {
             println(e.message)
             getValidInput()
+        }
+    }
+
+    private fun validateAndDeductInventory() {
+        while (true) {
+            try {
+                val purchase = getValidInput()
+                product.deductFromInventory(purchase)
+                break
+            } catch (e: IllegalArgumentException) {
+                println(e.message)
+            }
         }
     }
 }
