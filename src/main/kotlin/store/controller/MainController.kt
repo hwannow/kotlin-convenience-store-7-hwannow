@@ -3,6 +3,7 @@ package store.controller
 import store.data.Purchase
 import store.domain.Customer
 import store.domain.Products
+import store.domain.Promotions
 import store.view.InputView
 import store.view.OutputView
 
@@ -13,24 +14,24 @@ class MainController {
     private val product = Products()
     fun run() {
         outputView.printGreeting()
-        validateAndDeductInventory()
+        getValidInput()
     }
 
-    private fun getValidInput(): MutableList<Purchase> {
+    private fun validateInput(): MutableList<Purchase> {
         return try {
             val userInput = inputView.readItem()
             customer.buy(userInput)
         } catch (e: IllegalArgumentException) {
             println(e.message)
-            getValidInput()
+            validateInput()
         }
     }
 
-    private fun validateAndDeductInventory() {
+    private fun getValidInput() {
         while (true) {
             try {
-                val purchase = getValidInput()
-                product.deductFromInventory(purchase)
+                val purchase = validateInput()
+                product.validateInventory(purchase)
                 break
             } catch (e: IllegalArgumentException) {
                 println(e.message)

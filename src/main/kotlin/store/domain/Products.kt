@@ -28,16 +28,13 @@ class Products {
         return File(classLoader.getResource(fileName)?.toURI())
     }
 
-    fun deductFromInventory(purchases: MutableList<Purchase>) {
+    fun validateInventory(purchases: MutableList<Purchase>) {
         purchases.forEach { purchase ->
             val product = products.find { it.name == purchase.productName }
 
             if (product == null) throw IllegalArgumentException(ErrorConstant.ERROR_INPUT_NON_EXISTENT_PRODUCT)
             else if (product.quantity < purchase.quantity) throw IllegalArgumentException(ErrorConstant.ERROR_INPUT_PURCHASE_EXCEEDS_STOCK)
-
-            product.quantity -= purchase.quantity
         }
-        updateInventoryFile()
     }
 
     private fun updateInventoryFile() {
