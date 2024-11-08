@@ -7,13 +7,13 @@ class Customer {
     var purchases: MutableList<Purchase> = mutableListOf()
 
     fun buy(input: String): MutableList<Purchase> {
+        purchases = mutableListOf()
         inputFormatValidation(input)
         parsingInput(input)
         return purchases
     }
 
     private fun parsingInput(input: String): MutableList<Purchase> {
-        inputFormatValidation(input)
         val items = input.split("],[", "[", "]").filter { it.isNotEmpty() }
         items.forEach { item ->
             val parts = item.split("-")
@@ -21,6 +21,7 @@ class Customer {
                 parts[0],
                 parts[1].toIntOrNull() ?: throw IllegalArgumentException(ErrorConstant.ERROR_INPUT_QUANTITY_NOT_INTEGER_MESSAGE)
             )
+            if (product.quantity == 0) throw IllegalArgumentException(ErrorConstant.ERROR_INPUT_QUANTITY_IS_ZERO)
             purchases.add(product)
         }
         return purchases
