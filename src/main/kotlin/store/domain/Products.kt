@@ -1,12 +1,12 @@
 package store.domain
 
-import store.constant.ErrorConstant
 import store.data.Product
 import store.data.Purchase
 import java.io.File
 
 class Products {
     val products = mutableListOf<Product>()
+
     init {
         val file = getProductFile()
         file.forEachLine { line ->
@@ -28,15 +28,6 @@ class Products {
         return File(classLoader.getResource(fileName)?.toURI())
     }
 
-    fun validateInventory(purchases: MutableList<Purchase>) {
-        purchases.forEach { purchase ->
-            val product = products.find { it.name == purchase.productName }
-
-            if (product == null) throw IllegalArgumentException(ErrorConstant.ERROR_INPUT_NON_EXISTENT_PRODUCT)
-            else if (product.quantity < purchase.quantity) throw IllegalArgumentException(ErrorConstant.ERROR_INPUT_PURCHASE_EXCEEDS_STOCK)
-        }
-    }
-
     private fun updateInventoryFile() {
         val file = getProductFile()
 
@@ -46,5 +37,9 @@ class Products {
                 writer.println("${product.name},${product.price},${product.quantity},${product.promotion}")
             }
         }
+    }
+
+    fun getProductToBuy(purchase: Purchase): Product? {
+        return products.find { it.name == purchase.productName && it.promotion != "null" }
     }
 }

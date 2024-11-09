@@ -1,26 +1,29 @@
 package store.controller
 
 import store.data.Purchase
-import store.domain.Customer
 import store.domain.Products
-import store.domain.Promotions
+import store.repository.Repository
 import store.view.InputView
 import store.view.OutputView
 
 class MainController {
     private val inputView = InputView()
     private val outputView = OutputView(Products().products)
-    private val customer = Customer()
-    private val product = Products()
+    private val repo = Repository()
+    private val productController = PromotionController(repo, inputView)
+
     fun run() {
         outputView.printGreeting()
         getValidInput()
+        repo.customer.purchases.forEach { purchase ->
+            productController.applyPromotion(purchase)
+        }
     }
 
     private fun validateInput(): MutableList<Purchase> {
         return try {
             val userInput = inputView.readItem()
-            customer.buy(userInput)
+            repo.customer.getValidPurchases(userInput)
         } catch (e: IllegalArgumentException) {
             println(e.message)
             validateInput()
@@ -31,7 +34,7 @@ class MainController {
         while (true) {
             try {
                 val purchase = validateInput()
-                product.validateInventory(purchase)
+                repo.validateInventory(purchase)
                 break
             } catch (e: IllegalArgumentException) {
                 println(e.message)

@@ -6,4 +6,5 @@ object ErrorConstant {
     const val ERROR_INPUT_QUANTITY_IS_ZERO = "[ERROR] 1개 이상부터 구매 가능합니다."
     const val ERROR_INPUT_NON_EXISTENT_PRODUCT = "[ERROR] 존재하지 않는 상품입니다. 다시 입력해 주세요."
     const val ERROR_INPUT_PURCHASE_EXCEEDS_STOCK = "[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요."
+    const val ERROR_INPUT_CONFIRMATION = "[ERROR] 잘못된 입력입니다. 다시 입력해 주세요."
 }

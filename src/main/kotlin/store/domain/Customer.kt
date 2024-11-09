@@ -6,7 +6,7 @@ import store.data.Purchase
 class Customer {
     var purchases: MutableList<Purchase> = mutableListOf()
 
-    fun buy(input: String): MutableList<Purchase> {
+    fun getValidPurchases(input: String): MutableList<Purchase> {
         purchases = mutableListOf()
         inputFormatValidation(input)
         parsingInput(input)

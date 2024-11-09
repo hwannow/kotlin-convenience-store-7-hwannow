@@ -12,7 +12,7 @@ class CustomerTest {
     fun `구매자는 상품명과 수량을 입력해 상품을 구매할 수 있다`() {
         val correctInput = "[콜라-3],[에너지바-5]"
 
-        val purchases = customer.buy(correctInput)
+        val purchases = customer.getValidPurchases(correctInput)
         assertEquals(2, purchases.size)
         assertEquals("콜라", purchases[0].productName)
         assertEquals(3, purchases[0].quantity)
@@ -25,7 +25,7 @@ class CustomerTest {
         val wrongInput = "콜라 5개 주세요."
 
         assertThrows<IllegalArgumentException> {
-            customer.buy(wrongInput)
+            customer.getValidPurchases(wrongInput)
         }
     }
 }
