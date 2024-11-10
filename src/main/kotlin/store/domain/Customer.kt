@@ -5,6 +5,7 @@ import store.data.Purchase
 
 class Customer {
     var purchases: MutableList<Purchase> = mutableListOf()
+    var totalPriceWithNoPromotion: Int = 0
 
     fun getValidPurchases(input: String): MutableList<Purchase> {
         purchases = mutableListOf()

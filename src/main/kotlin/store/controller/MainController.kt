@@ -10,14 +10,16 @@ class MainController {
     private val inputView = InputView()
     private val outputView = OutputView(Products().products)
     private val repo = Repository()
-    private val productController = PromotionController(repo, inputView)
+    private val promotionController = PromotionController(repo, inputView)
 
     fun run() {
         outputView.printGreeting()
         getValidInput()
         repo.customer.purchases.forEach { purchase ->
-            productController.applyPromotion(purchase)
+            promotionController.applyPromotion(purchase)
         }
+        getValidMembership()
+        repo.membership.applyMembershipDiscount()
     }
 
     private fun validateInput(): MutableList<Purchase> {
@@ -35,6 +37,18 @@ class MainController {
             try {
                 val purchase = validateInput()
                 repo.validateInventory(purchase)
+                break
+            } catch (e: IllegalArgumentException) {
+                println(e.message)
+            }
+        }
+    }
+
+    private fun getValidMembership() {
+        while (true) {
+            try{
+                val membership = inputView.inputMembershipState()
+                repo.membership.setValidMembershipDiscountState(membership)
                 break
             } catch (e: IllegalArgumentException) {
                 println(e.message)

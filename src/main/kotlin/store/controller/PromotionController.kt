@@ -14,7 +14,7 @@ class PromotionController(
     private val inputView: InputView
 ) {
     fun applyPromotion(purchase: Purchase) {
-        val product = repo.product.getProductToBuy(purchase) ?: return
+        val product = repo.product.getProductToBuyWithPromotion(purchase) ?: return
         val promotion = repo.promotion.getPromotionToBuy(product)
         val condition = getDiscountState(purchase, product, promotion)
         if (!isCurrentDateInPromotionWindow(promotion.startDate, promotion.endDate)) {

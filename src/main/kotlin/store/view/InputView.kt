@@ -27,4 +27,9 @@ class InputView {
 
         return testInput ?: Console.readLine()
     }
+
+    fun inputMembershipState(): String {
+        println(ViewConstant.OUTPUT_MEMBERSHIP_DISCOUNT_CONFIRMATION)
+        return testInput ?: Console.readLine()
+    }
 }

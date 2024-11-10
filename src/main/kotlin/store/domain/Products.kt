@@ -39,7 +39,7 @@ class Products {
         }
     }
 
-    fun getProductToBuy(purchase: Purchase): Product? {
+    fun getProductToBuyWithPromotion(purchase: Purchase): Product? {
         return products.find { it.name == purchase.productName && it.promotion != "null" }
     }
 }
