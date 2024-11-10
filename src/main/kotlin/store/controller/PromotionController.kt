@@ -8,6 +8,7 @@ import store.repository.Repository
 import store.view.InputView
 import camp.nextstep.edu.missionutils.DateTimes
 import java.time.LocalDate
+import kotlin.math.max
 
 class PromotionController(
     private val repo: Repository,
@@ -40,7 +41,7 @@ class PromotionController(
     // 프로모션에 의해 물품을 추가로 증정할 수 있는 경우
     private fun handleAdditionalPromotion(promotion: Promotion, purchase: Purchase) {
         val buyPlusGet = promotion.buy + promotion.get
-        val additionalItem = if (getValidConfirm(DiscountState.PROMOTION_ADDITIONAL, purchase, promotion) == "Y") {
+        val additionalItem = if (getValidConfirm(DiscountState.PROMOTION_ADDITIONAL, purchase.productName, promotion.get) == "Y") {
             promotion.get
         } else {
             0
@@ -56,7 +57,7 @@ class PromotionController(
         val buyPlusGet = promotion.buy + promotion.get
         val maxQuantity = (product.quantity / buyPlusGet) * buyPlusGet
 
-        val answer = getValidConfirm(DiscountState.PROMOTION_EXCLUSION, purchase, promotion)
+        val answer = getValidConfirm(DiscountState.PROMOTION_EXCLUSION, purchase.productName, purchase.quantity - maxQuantity)
         if (answer == "N") {
             purchase.quantity -= purchase.quantity - maxQuantity
         }
@@ -76,11 +77,11 @@ class PromotionController(
         }
     }
 
-    private fun getValidConfirm(condition: DiscountState, purchase: Purchase, promotion: Promotion): String {
+    private fun getValidConfirm(condition: DiscountState, name: String, quantity: Int): String {
         var answer: String = ""
         while (true) {
             try {
-                answer = inputView.inputConfirmation(condition, purchase.productName, promotion.get)
+                answer = inputView.inputConfirmation(condition, name, quantity)
                 repo.validateConfirmation(answer)
                 break
             } catch (e: IllegalArgumentException) {
