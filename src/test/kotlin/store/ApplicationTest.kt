@@ -4,16 +4,22 @@ import camp.nextstep.edu.missionutils.test.Assertions.assertNowTest
 import camp.nextstep.edu.missionutils.test.Assertions.assertSimpleTest
 import camp.nextstep.edu.missionutils.test.NsTest
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.MethodOrderer
-import org.junit.jupiter.api.Order
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestMethodOrder
+import java.io.File
 import java.time.LocalDate
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 class ApplicationTest : NsTest() {
+    val originalFilePath: String = "src/main/resources/products.md"
+    val resetFilePath: String = "src/main/resources/reset.md"
+    @BeforeEach
+    fun setup() {
+        val originalFile = File(originalFilePath)
+        val resetFile = File(resetFilePath)
+        resetFile.copyTo(originalFile, overwrite = true)
+    }
+
     @Test
-    @Order(1)
     fun `파일에 있는 상품 목록 출력`() {
         assertSimpleTest {
             run("[물-1]", "N", "N")

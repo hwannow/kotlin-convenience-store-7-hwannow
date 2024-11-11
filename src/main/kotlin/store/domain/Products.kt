@@ -9,14 +9,11 @@ class Products {
     private var filePath: String = "src/main/resources/products.md"
 
     init {
-        val resetFile = File("src/main/resources/reset.md")
-        val originalFile = File("src/main/resources/products.md")
-        resetFile.copyTo(originalFile, overwrite = true)
-
-        loadProductsFromFile(File(filePath))
+        loadProductsFromFile()
     }
 
-    fun loadProductsFromFile(file: File) {
+    fun loadProductsFromFile() {
+        val file = File(filePath)
         products.clear() // 기존 데이터 초기화
         file.forEachLine { line ->
             if (line.isNotEmpty() && !line.startsWith("name")) {
