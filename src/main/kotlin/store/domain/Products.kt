@@ -10,9 +10,10 @@ class Products {
 
     init {
         loadProductsFromFile()
+        checkPromotion()
     }
 
-    fun loadProductsFromFile() {
+    private fun loadProductsFromFile() {
         val file = File(filePath)
         products.clear() // 기존 데이터 초기화
         file.forEachLine { line ->
@@ -36,6 +37,23 @@ class Products {
             products.forEach { product ->
                 writer.println("${product.name},${product.price},${product.quantity},${product.promotion}")
             }
+        }
+    }
+
+    private fun checkPromotion() {
+        var index: Int = 0
+        while (index < products.size) {
+            val productWithPromotion = products.find { it.name == products[index].name && it.promotion != "null" }
+            if (productWithPromotion == null) {
+                index++
+                continue
+            }
+            val productWithNoPromotion = getProductToBuyWithNoPromotion(products[index].name)
+            if (productWithNoPromotion == null) {
+                products.add(index + 1, Product(products[index].name, products[index].price, 0, "null"))
+                index++
+            }
+            index++
         }
     }
 
