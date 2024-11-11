@@ -8,7 +8,7 @@ class Products {
     val products = mutableListOf<Product>()
 
     init {
-        val file = getProductFile()
+        val file = File("src/main/resources/products.md")
         file.forEachLine { line ->
             if (line.isNotEmpty() && !line.startsWith("name")) {
                 val parts = line.split(",")
@@ -22,14 +22,8 @@ class Products {
         }
     }
 
-    private fun getProductFile(): File {
-        val fileName = "products.md"
-        val classLoader = Product::class.java.classLoader
-        return File(classLoader.getResource(fileName)?.toURI())
-    }
-
-    private fun updateInventoryFile() {
-        val file = getProductFile()
+    fun updateInventoryFile() {
+        val file = File("src/main/resources/products.md")
 
         file.printWriter().use { writer ->
             writer.println("name,price,quantity,promotion")
@@ -41,5 +35,9 @@ class Products {
 
     fun getProductToBuyWithPromotion(purchase: Purchase): Product? {
         return products.find { it.name == purchase.productName && it.promotion != "null" }
+    }
+
+    fun getProductToBuyWithNoPromotion(name: String): Product? {
+        return products.find { it.name == name && it.promotion == "null" }
     }
 }

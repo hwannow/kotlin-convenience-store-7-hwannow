@@ -20,7 +20,7 @@ class PromotionTest {
         val input = "[콜라-3]"
 
         repo.customer.getValidPurchases(input)
-        productController.applyPromotion(repo.customer.purchases[0])
+        productController.updateProduct(repo.customer.purchases[0])
 
         assertEquals("콜라", repo.promotion.saledItems[0].productName)
         assertEquals(1, repo.promotion.saledItems[0].quantity)
@@ -32,7 +32,7 @@ class PromotionTest {
         inputView.setTestInput("Y")
 
         repo.customer.getValidPurchases(input)
-        productController.applyPromotion(repo.customer.purchases[0])
+        productController.updateProduct(repo.customer.purchases[0])
 
         assertEquals("콜라", repo.promotion.saledItems[0].productName)
         assertEquals(2, repo.promotion.saledItems[0].quantity)
@@ -45,7 +45,7 @@ class PromotionTest {
         inputView.setTestInput("Y")
 
         repo.customer.getValidPurchases(input)
-        productController.applyPromotion(repo.customer.purchases[0])
+        productController.updateProduct(repo.customer.purchases[0])
 
         assertEquals("콜라", repo.promotion.saledItems[0].productName)
         assertEquals(3, repo.promotion.saledItems[0].quantity)
@@ -58,7 +58,7 @@ class PromotionTest {
         inputView.setTestInput("N")
 
         repo.customer.getValidPurchases(input)
-        productController.applyPromotion(repo.customer.purchases[0])
+        productController.updateProduct(repo.customer.purchases[0])
 
         assertEquals("콜라", repo.promotion.saledItems[0].productName)
         assertEquals(3, repo.promotion.saledItems[0].quantity)
@@ -74,7 +74,7 @@ class PromotionTest {
         val input = "[환노우-4]"
 
         repo.customer.getValidPurchases(input)
-        productController.applyPromotion(repo.customer.purchases[0])
+        productController.updateProduct(repo.customer.purchases[0])
 
         assertTrue(repo.promotion.saledItems.isEmpty())
     }

@@ -12,9 +12,9 @@ class MembershipTest {
     private val promotionController = PromotionController(repo, inputView)
     @Test
     fun `멤버십 회원은 멤버십 할인을 받을 수 있다`() {
-        repo.membership.setValidMembershipDiscountState("Y", repo)
+        repo.membership.setValidMembershipDiscountState("Y")
 
-        assertEquals(DiscountState.MEMBERSHIP_DISCOUNT, repo.membership)
+        assertEquals(DiscountState.MEMBERSHIP_DISCOUNT, repo.membership.membership)
     }
 
     @Test
@@ -23,12 +23,12 @@ class MembershipTest {
 
         repo.customer.getValidPurchases(input)
         repo.customer.purchases.forEach { purchase ->
-            promotionController.applyPromotion(purchase)
+            promotionController.updateProduct(purchase)
         }
-        inputView.setTestInput("Y")
+        repo.membership.setValidMembershipDiscountState("Y")
 
-        repo.customer.calculateTotalPriceWithNoPromotion(repo.promotion, repo.product)
-        repo.membership.calculateMembershipDiscountAmount(repo.customer.totalPriceWithNoPromotion)
+        repo.calculateTotalPriceWithNoPromotion()
+        repo.membership.applyMembershipDiscount(repo.totalPriceWithNoPromotion)
 
         assertEquals(3000, repo.membership.membershipDiscountAmount)
     }
@@ -39,12 +39,12 @@ class MembershipTest {
 
         repo.customer.getValidPurchases(input)
         repo.customer.purchases.forEach { purchase ->
-            promotionController.applyPromotion(purchase)
+            promotionController.updateProduct(purchase)
         }
-        inputView.setTestInput("Y")
+        repo.membership.setValidMembershipDiscountState("Y")
 
-        repo.customer.calculateTotalPriceWithNoPromotion(repo.promotion, repo.product)
-        repo.membership.calculateMembershipDiscountAmount(repo.customer.totalPriceWithNoPromotion)
+        repo.calculateTotalPriceWithNoPromotion()
+        repo.membership.applyMembershipDiscount(repo.totalPriceWithNoPromotion)
 
         assertEquals(8000, repo.membership.membershipDiscountAmount)
     }

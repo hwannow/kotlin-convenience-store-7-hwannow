@@ -1,25 +1,37 @@
 package store.controller
 
 import store.data.Purchase
-import store.domain.Products
 import store.repository.Repository
 import store.view.InputView
 import store.view.OutputView
 
 class MainController {
-    private val inputView = InputView()
-    private val outputView = OutputView(Products().products)
     private val repo = Repository()
+    private val inputView = InputView()
     private val promotionController = PromotionController(repo, inputView)
+    private val outputView = OutputView(repo.product.products)
 
     fun run() {
-        outputView.printGreeting()
-        getValidInput()
-        repo.customer.purchases.forEach { purchase ->
-            promotionController.applyPromotion(purchase)
+        while (true) {
+            outputView.printGreeting()
+            getValidInput()
+            repo.customer.purchases.forEach { purchase ->
+                promotionController.updateProduct(purchase)
+            }
+            getValidMembership()
+            calculatePrice()
+            outputView.printReceipt(repo)
+            if (getValidAdditionalInput() == "N") break
+            repo.reset()
         }
-        getValidMembership()
-        repo.membership.applyMembershipDiscount()
+        repo.product.updateInventoryFile()
+    }
+
+    private fun calculatePrice() {
+        repo.calculateTotalPrice()
+        repo.calculateTotalPriceWithNoPromotion()
+        repo.calculateTotalPriceWithPromotion()
+        repo.membership.applyMembershipDiscount(repo.totalPriceWithNoPromotion)
     }
 
     private fun validateInput(): MutableList<Purchase> {
@@ -48,8 +60,21 @@ class MainController {
         while (true) {
             try{
                 val membership = inputView.inputMembershipState()
+                repo.validateConfirmation(membership)
                 repo.membership.setValidMembershipDiscountState(membership)
                 break
+            } catch (e: IllegalArgumentException) {
+                println(e.message)
+            }
+        }
+    }
+
+    private fun getValidAdditionalInput(): String {
+        while (true) {
+            try {
+                val additionalInput = inputView.inputAdditionalPurchase()
+                repo.validateConfirmation(additionalInput)
+                return additionalInput
             } catch (e: IllegalArgumentException) {
                 println(e.message)
             }

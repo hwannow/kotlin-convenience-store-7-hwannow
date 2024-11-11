@@ -4,10 +4,11 @@ import store.data.Product
 import java.io.File
 import store.data.Promotion
 import store.data.Purchase
+import store.repository.Repository
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class Promotions {
+class Promotions() {
     val promotions = mutableListOf<Promotion>()
     var saledItems = mutableListOf<Purchase>()
 
@@ -38,5 +39,9 @@ class Promotions {
 
     fun addSaledItem(purchase: Purchase) {
         saledItems.add(purchase)
+    }
+
+    fun resetPromotion() {
+        saledItems = mutableListOf()
     }
 }

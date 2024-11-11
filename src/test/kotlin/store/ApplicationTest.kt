@@ -44,7 +44,7 @@ class ApplicationTest : NsTest() {
     }
 
     @Test
-    fun `기간에 해당하지 않는 프로모션 적용`() {
+        fun `기간에 해당하지 않는 프로모션 적용`() {
         assertNowTest({
             run("[감자칩-2]", "N", "N")
             assertThat(output().replace("\\s".toRegex(), "")).contains("내실돈3,000")

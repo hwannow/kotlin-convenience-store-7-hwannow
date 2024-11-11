@@ -32,4 +32,9 @@ class InputView {
         println(ViewConstant.OUTPUT_MEMBERSHIP_DISCOUNT_CONFIRMATION)
         return testInput ?: Console.readLine()
     }
+
+    fun inputAdditionalPurchase(): String {
+        println(ViewConstant.OUTPUT_ADDITION_PURCHASE)
+        return testInput ?: Console.readLine()
+    }
 }

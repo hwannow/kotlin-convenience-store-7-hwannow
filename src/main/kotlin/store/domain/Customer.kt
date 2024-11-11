@@ -5,7 +5,6 @@ import store.data.Purchase
 
 class Customer {
     var purchases: MutableList<Purchase> = mutableListOf()
-    var totalPriceWithNoPromotion: Int = 0
 
     fun getValidPurchases(input: String): MutableList<Purchase> {
         purchases = mutableListOf()
@@ -32,5 +31,9 @@ class Customer {
         if (!input.matches(Regex("""\[[가-힣]+-\d+](,\[[가-힣]+-\d+])*"""))) {
             throw IllegalArgumentException(ErrorConstant.ERROR_INPUT_FORMAT_MESSAGE)
         }
+    }
+
+    fun resetCustomer() {
+        purchases = mutableListOf()
     }
 }
