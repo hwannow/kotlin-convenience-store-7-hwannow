@@ -6,9 +6,18 @@ import java.io.File
 
 class Products {
     val products = mutableListOf<Product>()
+    private var filePath: String = "src/main/resources/products.md"
 
     init {
-        val file = File("src/main/resources/products.md")
+        val resetFile = File("src/main/resources/reset.md")
+        val originalFile = File("src/main/resources/products.md")
+        resetFile.copyTo(originalFile, overwrite = true)
+
+        loadProductsFromFile(File(filePath))
+    }
+
+    fun loadProductsFromFile(file: File) {
+        products.clear() // 기존 데이터 초기화
         file.forEachLine { line ->
             if (line.isNotEmpty() && !line.startsWith("name")) {
                 val parts = line.split(",")
@@ -23,7 +32,7 @@ class Products {
     }
 
     fun updateInventoryFile() {
-        val file = File("src/main/resources/products.md")
+        val file = File(filePath)
 
         file.printWriter().use { writer ->
             writer.println("name,price,quantity,promotion")

@@ -70,7 +70,9 @@ class PromotionTest {
         val invalidPromotion =Promotion("환노우할인", 2, 1, LocalDate.parse("2022-01-01"), LocalDate.parse("2022-12-31"))
         repo.promotion.promotions.add(invalidPromotion)
         val product = Product("환노우", 1000, 10,"환노우할인")
+        val productWithNoPromotion = Product("환노우", 1000, 10, "null")
         repo.product.products.add(product)
+        repo.product.products.add(productWithNoPromotion)
         val input = "[환노우-4]"
 
         repo.customer.getValidPurchases(input)

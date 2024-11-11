@@ -29,9 +29,7 @@ class ProductTest {
             promotionController.updateProduct(purchase)
         }
 
-        repo.product.updateInventoryFile()
-        val products = Products()
-        assertEquals(products.products, repo.product.products)
+        assertEquals(0, repo.product.products[0].quantity)
     }
 
     @Test
