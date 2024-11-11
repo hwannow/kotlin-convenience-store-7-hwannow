@@ -74,7 +74,7 @@ class PromotionController(
     }
 
     private fun getProductAndPromotionToBuy(purchase: Purchase) {
-        product = repo.product.getProductToBuyWithPromotion(purchase) ?: return
+        product = repo.product.getProductToBuyWithPromotion(purchase.productName) ?: return
         promotion = repo.promotion.getPromotionToBuy(product)
     }
 

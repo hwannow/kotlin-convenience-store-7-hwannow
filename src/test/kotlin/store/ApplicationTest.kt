@@ -10,15 +10,6 @@ import java.io.File
 import java.time.LocalDate
 
 class ApplicationTest : NsTest() {
-    val originalFilePath: String = "src/main/resources/products.md"
-    val resetFilePath: String = "src/main/resources/reset.md"
-    @BeforeEach
-    fun setup() {
-        val originalFile = File(originalFilePath)
-        val resetFile = File(resetFilePath)
-        resetFile.copyTo(originalFile, overwrite = true)
-    }
-
     @Test
     fun `파일에 있는 상품 목록 출력`() {
         assertSimpleTest {

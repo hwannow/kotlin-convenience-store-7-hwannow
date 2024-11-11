@@ -24,7 +24,6 @@ class MainController {
             if (getValidAdditionalInput() == "N") break
             repo.reset()
         }
-        repo.product.updateInventoryFile()
     }
 
     private fun calculatePrice() {

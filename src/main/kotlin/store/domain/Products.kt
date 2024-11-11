@@ -1,7 +1,6 @@
 package store.domain
 
 import store.data.Product
-import store.data.Purchase
 import java.io.File
 
 class Products {
@@ -10,7 +9,7 @@ class Products {
 
     init {
         loadProductsFromFile()
-        checkPromotion()
+        checkProductWithNoPromotion()
     }
 
     private fun loadProductsFromFile() {
@@ -19,46 +18,35 @@ class Products {
         file.forEachLine { line ->
             if (line.isNotEmpty() && !line.startsWith("name")) {
                 val parts = line.split(",")
-                val name = parts[0]
-                val price = parts[1].toInt()
-                val quantity = parts[2].toInt()
-                val promotion = parts[3]
-
-                products.add(Product(name, price, quantity, promotion))
+                products.add(Product(parts[0], parts[1].toInt(), parts[2].toInt(), parts[3]))
             }
         }
     }
 
-    fun updateInventoryFile() {
-        val file = File(filePath)
-
-        file.printWriter().use { writer ->
-            writer.println("name,price,quantity,promotion")
-            products.forEach { product ->
-                writer.println("${product.name},${product.price},${product.quantity},${product.promotion}")
-            }
-        }
-    }
-
-    private fun checkPromotion() {
+    private fun checkProductWithNoPromotion() {
         var index: Int = 0
         while (index < products.size) {
-            val productWithPromotion = products.find { it.name == products[index].name && it.promotion != "null" }
+            val productWithPromotion = getProductToBuyWithPromotion(products[index].name)
             if (productWithPromotion == null) {
                 index++
                 continue
             }
-            val productWithNoPromotion = getProductToBuyWithNoPromotion(products[index].name)
-            if (productWithNoPromotion == null) {
-                products.add(index + 1, Product(products[index].name, products[index].price, 0, "null"))
-                index++
-            }
+            if (addProductWithNoPromotion(index)) index++
             index++
         }
     }
 
-    fun getProductToBuyWithPromotion(purchase: Purchase): Product? {
-        return products.find { it.name == purchase.productName && it.promotion != "null" }
+    private fun addProductWithNoPromotion(index: Int): Boolean {
+        val productWithNoPromotion = getProductToBuyWithNoPromotion(products[index].name)
+        if (productWithNoPromotion == null) {
+            products.add(index + 1, Product(products[index].name, products[index].price, 0, "null"))
+            return true
+        }
+        return false
+    }
+
+    fun getProductToBuyWithPromotion(name: String): Product? {
+        return products.find { it.name == name && it.promotion != "null" }
     }
 
     fun getProductToBuyWithNoPromotion(name: String): Product? {

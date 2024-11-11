@@ -84,7 +84,7 @@ class Repository {
 
     fun calculateTotalPriceWithPromotion() {
         promotion.saledItems.forEach { purchase ->
-            val productToBuy = product.getProductToBuyWithPromotion(purchase)!!
+            val productToBuy = product.getProductToBuyWithPromotion(purchase.productName)!!
             totalPriceWithPromotion += productToBuy.price * purchase.quantity
         }
     }
