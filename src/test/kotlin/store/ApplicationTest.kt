@@ -4,7 +4,9 @@ import camp.nextstep.edu.missionutils.test.Assertions.assertNowTest
 import camp.nextstep.edu.missionutils.test.Assertions.assertSimpleTest
 import camp.nextstep.edu.missionutils.test.NsTest
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.io.File
 import java.time.LocalDate
 
 class ApplicationTest : NsTest() {
@@ -44,7 +46,7 @@ class ApplicationTest : NsTest() {
     }
 
     @Test
-    fun `기간에 해당하지 않는 프로모션 적용`() {
+        fun `기간에 해당하지 않는 프로모션 적용`() {
         assertNowTest({
             run("[감자칩-2]", "N", "N")
             assertThat(output().replace("\\s".toRegex(), "")).contains("내실돈3,000")
